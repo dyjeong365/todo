@@ -8,7 +8,7 @@ import java.util.List;
 @RequestMapping("/v1/todos")
 public class TodoController {
 
-    private TodoRepository todoRepository;
+    private final TodoRepository todoRepository;
 
     public TodoController(TodoRepository todoRepository) {
         this.todoRepository = todoRepository;

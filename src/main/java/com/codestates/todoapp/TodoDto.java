@@ -35,12 +35,6 @@ public class TodoDto {
         private int todoOrder;
         private boolean completed;
     }
-
-    @Getter
-    @AllArgsConstructor
-    public static class Responses {
-        private List<Response> response;
-    }
 }
 
 

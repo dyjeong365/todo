@@ -14,5 +14,5 @@ public interface TodoMapper {
 
     TodoDto.Response todoToTodoResponse(Todo todo);
 
-    List<TodoDto.Response> todosToTodoResponses(List<Todo> todos);
+    List<TodoDto.Response> todosToTodoResponses(List<Todo> todoList);
 }

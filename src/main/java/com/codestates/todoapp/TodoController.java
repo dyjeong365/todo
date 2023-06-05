@@ -8,10 +8,12 @@ import java.util.List;
 @RequestMapping("/v1/todos")
 public class TodoController {
 
-    private final TodoRepository todoRepository;
+    private final TodoService todoService;
+    private final TodoMapper mapper;
 
-    public TodoController(TodoRepository todoRepository) {
-        this.todoRepository = todoRepository;
+    public TodoController(TodoService todoService, TodoMapper mapper) {
+        this.todoService = todoService;
+        this.mapper = mapper;
     }
 
     @PostMapping

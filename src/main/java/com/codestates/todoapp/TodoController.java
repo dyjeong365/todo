@@ -42,7 +42,6 @@ public class TodoController {
     public ResponseEntity<TodoDto.Response> patchTodo(@PathVariable("todo-id") Long id,
                                                       @RequestBody TodoDto.Patch requestBody) {
         requestBody.setId(id);
-
         Todo getTodo = mapper.todoPatchToTodo(requestBody);
 
         return new ResponseEntity<>(mapper.todoToTodoResponse(todoService.updateTodo(getTodo)), HttpStatus.OK);

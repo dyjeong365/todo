@@ -10,7 +10,7 @@ public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/v1/todos/**")
-                .allowedOrigins("https://todobackend.com/")
+                .allowedOrigins("https://todobackend.com")
                 .allowedMethods("GET", "POST", "DELETE", "PATCH")
                 .allowedHeaders("*")
                 .maxAge(3600);

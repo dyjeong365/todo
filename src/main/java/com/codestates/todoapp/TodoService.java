@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Transactional
 @Service
@@ -20,15 +21,17 @@ public class TodoService {
 
 
     public Todo updateTodo(Todo todo) {
-        Todo findTodo = todoRepository.findById(todo.getId()).orElse(null);
+        Optional<Todo> optionalTodo = todoRepository.findById(todo.getId());
 
-        if (findTodo == null) return null;
+        if (optionalTodo.isPresent()) {
+            Todo existingTodo = optionalTodo.get();
 
-        findTodo.setTitle(todo.getTitle());
-        findTodo.setTodoOrder(todo.getTodoOrder());
-        findTodo.setCompleted(todo.isCompleted());
-
-        return todoRepository.save(findTodo);
+            existingTodo.setTitle(todo.getTitle());
+            existingTodo.setTodoOrder(todo.getTodoOrder());
+            existingTodo.setCompleted(todo.isCompleted());
+            return todoRepository.save(existingTodo);
+        }
+        return null;
     }
 
     public Todo getTodo(Long id) {
@@ -39,8 +42,13 @@ public class TodoService {
         return todoRepository.findAll();
     }
 
-    public void deleteTodo(long id) {
-        todoRepository.deleteById(id);
+    public boolean deleteTodo(Long id) {
+        Optional<Todo> optionalTodo = todoRepository.findById(id);
+        if (optionalTodo.isPresent()) {
+            todoRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
     public void deleteAllTodos() {

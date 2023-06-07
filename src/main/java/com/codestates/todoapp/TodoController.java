@@ -21,42 +21,40 @@ public class TodoController {
     @PostMapping
     public ResponseEntity<TodoDto.Response> postTodo(@RequestBody TodoDto.Post requestBody) {
         Todo createdTodo = todoService.createTodo(mapper.todoPostToTodo(requestBody));
-
-        return new ResponseEntity<>(mapper.todoToTodoResponse(createdTodo), HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.todoToTodoResponse(createdTodo));
     }
 
     @GetMapping
-    public ResponseEntity<List<TodoDto.Response>> getTodos() {
-
-        return new ResponseEntity<>(mapper.todosToTodoResponses(todoService.getTodos()), HttpStatus.OK);
+    public ResponseEntity<List<TodoDto.Response>> getAllTodos() {
+        List<Todo> todos = todoService.getTodos();
+        return ResponseEntity.status(HttpStatus.OK).body(mapper.todosToTodoResponses(todos));
     }
 
-    @GetMapping("/{todo-id}")
-    public ResponseEntity<TodoDto.Response> getTodo(@PathVariable("todo-id") Long id) {
-
-        return new ResponseEntity<>(mapper.todoToTodoResponse(todoService.getTodo(id)), HttpStatus.OK);
+    @GetMapping("/{id}")
+    public ResponseEntity<TodoDto.Response> getTodoById(@PathVariable("id") Long id) {
+        Todo todo = todoService.getTodo(id);
+        return ResponseEntity.status(HttpStatus.OK).body(mapper.todoToTodoResponse(todo));
     }
 
-    @PatchMapping("/{todo-id}")
-    public ResponseEntity<TodoDto.Response> patchTodo(@PathVariable("todo-id") Long id,
-                                                      @RequestBody TodoDto.Patch requestBody) {
+    @PatchMapping("/{id}")
+    public ResponseEntity<TodoDto.Response> patchTodoById(@PathVariable("id") Long id,
+                                                          @RequestBody TodoDto.Patch requestBody) {
         requestBody.setId(id);
-        Todo getTodo = mapper.todoPatchToTodo(requestBody);
-
-        return new ResponseEntity<>(mapper.todoToTodoResponse(todoService.updateTodo(getTodo)), HttpStatus.OK);
+        Todo updatedTodo = todoService.updateTodo(mapper.todoPatchToTodo(requestBody));
+        return updatedTodo == null
+                ? ResponseEntity.notFound().build()
+                : ResponseEntity.status(HttpStatus.OK).body(mapper.todoToTodoResponse(updatedTodo));
     }
 
-    @DeleteMapping("/{todo-id}")
-    public ResponseEntity<HttpStatus> deleteTodo(@PathVariable("todo-id") Long id) {
-        todoService.deleteTodo(id);
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteTodoById(@PathVariable("id") Long id) {
+        boolean deleted = todoService.deleteTodo(id);
+        return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping
-    public ResponseEntity<HttpStatus> deleteAllTodos() {
+    public ResponseEntity<Void> deleteAllTodos() {
         todoService.deleteAllTodos();
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
 }

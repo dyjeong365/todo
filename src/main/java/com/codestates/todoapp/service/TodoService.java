@@ -28,11 +28,12 @@ public class TodoService {
         if (optionalTodo.isPresent()) {
             Todo existingTodo = optionalTodo.get();
 
-            existingTodo.setTitle(todo.getTitle());
-            existingTodo.setTodoOrder(todo.getTodoOrder());
-            existingTodo.setCompleted(todo.isCompleted());
+            existingTodo.updateTitle(todo.getTitle());
+            existingTodo.updateTodoOrder(todo.getTodoOrder());
+            existingTodo.updateCompleted(todo.isCompleted());
             return todoRepository.save(existingTodo);
         }
+
         return null;
     }
 

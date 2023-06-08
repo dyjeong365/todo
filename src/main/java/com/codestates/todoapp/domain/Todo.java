@@ -1,15 +1,15 @@
 package com.codestates.todoapp.domain;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Entity
-@Setter
+
+@Builder
 @Getter
-@NoArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
 public class Todo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,4 +23,16 @@ public class Todo {
 
     @Column(nullable = false)
     private boolean completed;
+
+    public void updateTitle(String title){
+        this.title = title;
+    }
+
+    public void updateTodoOrder(int todoOrder){
+        this.todoOrder = todoOrder;
+    }
+
+    public void updateCompleted(boolean completed){
+        this.completed = completed;
+    }
 }

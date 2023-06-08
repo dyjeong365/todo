@@ -42,15 +42,13 @@ public class TodoController {
                                                           @RequestBody TodoDto.Patch requestBody) {
         requestBody.setId(id);
         Todo updatedTodo = todoService.updateTodo(mapper.todoPatchToTodo(requestBody));
-        return updatedTodo == null
-                ? ResponseEntity.notFound().build()
-                : ResponseEntity.status(HttpStatus.OK).body(mapper.todoToTodoResponse(updatedTodo));
+        return ResponseEntity.status(HttpStatus.OK).body(mapper.todoToTodoResponse(updatedTodo));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTodoById(@PathVariable("id") Long id) {
-        boolean deleted = todoService.deleteTodo(id);
-        return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+        todoService.deleteTodo(id);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping

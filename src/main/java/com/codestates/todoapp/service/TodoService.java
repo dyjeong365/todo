@@ -16,27 +16,25 @@ public class TodoService {
     private final TodoRepository todoRepository;
 
     public Todo createTodo(Todo todo) {
+        validateTodo(todo);
         return todoRepository.save(todo);
     }
 
 
     public Todo updateTodo(Todo todo) {
-        Optional<Todo> optionalTodo = todoRepository.findById(todo.getId());
+        validateTodo(todo);
 
-        if (optionalTodo.isPresent()) {
-            Todo existingTodo = optionalTodo.get();
+        Todo existingTodo = getExistingTodoById(todo.getId());
 
-            existingTodo.updateTitle(todo.getTitle());
-            existingTodo.updateTodoOrder(todo.getTodoOrder());
-            existingTodo.updateCompleted(todo.isCompleted());
-            return todoRepository.save(existingTodo);
-        }
-        return null;
+        existingTodo.updateTitle(todo.getTitle());
+        existingTodo.updateTodoOrder(todo.getTodoOrder());
+        existingTodo.updateCompleted(todo.isCompleted());
+        return todoRepository.save(existingTodo);
     }
 
     @Transactional(readOnly = true)
     public Todo getTodo(Long id) {
-        return todoRepository.findById(id).orElse(null);
+        return getExistingTodoById(id);
     }
 
     @Transactional(readOnly = true)
@@ -44,17 +42,37 @@ public class TodoService {
         return todoRepository.findAll();
     }
 
-    public boolean deleteTodo(Long id) {
-        Optional<Todo> optionalTodo = todoRepository.findById(id);
-        if (optionalTodo.isPresent()) {
-            todoRepository.deleteById(id);
-            return true;
-        }
-        return false;
+    public void deleteTodo(Long id) {
+        Todo todo = getExistingTodoById(id);
+        todoRepository.delete(todo);
     }
 
     public void deleteAllTodos() {
         todoRepository.deleteAll();
+    }
+
+    private void validateTodo(Todo todo) {
+
+        if (todo.getTitle() == null || todo.getTitle().isEmpty()) {
+            throw new IllegalArgumentException("제목을 입력하지 않았습니다.");
+        }
+
+        if (todo.getTodoOrder() < 0) {
+            throw new IllegalArgumentException("TodoOrder는 음수일 수 없습니다.");
+        }
+
+        if (todo.getTitle().length() > 50) {
+            throw new IllegalArgumentException("제한된 제목 길이를 초과했습니다.");
+        }
+    }
+
+    private Todo getExistingTodoById(Long id) {
+        Optional<Todo> optionalTodo = todoRepository.findById(id);
+        if (optionalTodo.isPresent()) {
+            return optionalTodo.get();
+        } else {
+            throw new IllegalArgumentException("id: " + id + " 에 해당하는 Todo를 찾을 수 없습니다.");
+        }
     }
 }
 

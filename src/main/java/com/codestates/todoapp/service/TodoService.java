@@ -1,5 +1,7 @@
-package com.codestates.todoapp;
+package com.codestates.todoapp.service;
 
+import com.codestates.todoapp.domain.Todo;
+import com.codestates.todoapp.repository.TodoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

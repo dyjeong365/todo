@@ -1,4 +1,4 @@
-package com.codestates.todoapp;
+package com.codestates.todoapp.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

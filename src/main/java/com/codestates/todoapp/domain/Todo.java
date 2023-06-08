@@ -1,4 +1,4 @@
-package com.codestates.todoapp;
+package com.codestates.todoapp.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

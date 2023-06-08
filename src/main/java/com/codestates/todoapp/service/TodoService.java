@@ -37,10 +37,12 @@ public class TodoService {
         return null;
     }
 
+    @Transactional(readOnly = true)
     public Todo getTodo(Long id) {
         return todoRepository.findById(id).orElse(null);
     }
 
+    @Transactional(readOnly = true)
     public List<Todo> getTodos() {
         return todoRepository.findAll();
     }

@@ -1,5 +1,7 @@
-package com.codestates.todoapp;
+package com.codestates.todoapp.service;
 
+import com.codestates.todoapp.domain.Todo;
+import com.codestates.todoapp.repository.TodoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -7,9 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Transactional
 @Service
-@RequiredArgsConstructor
 public class TodoService {
     private final TodoRepository todoRepository;
 
@@ -19,23 +21,25 @@ public class TodoService {
 
 
     public Todo updateTodo(Todo todo) {
-        Optional<Todo> optionalTodo = todoRepository.findById(todo.getId());
+        Optional<Todo> optionalTodo = Optional.ofNullable(findVerifiedTodos(todo.getId()));
 
         if (optionalTodo.isPresent()) {
             Todo existingTodo = optionalTodo.get();
 
-            existingTodo.setTitle(todo.getTitle());
-            existingTodo.setTodoOrder(todo.getTodoOrder());
-            existingTodo.setCompleted(todo.isCompleted());
+            existingTodo.updateTitle(todo.getTitle());
+            existingTodo.updateTodoOrder(todo.getTodoOrder());
+            existingTodo.updateCompleted(todo.isCompleted());
             return todoRepository.save(existingTodo);
         }
+
         return null;
     }
 
     public Todo getTodo(Long id) {
-        return todoRepository.findById(id).orElse(null);
+        return findVerifiedTodos(id);
     }
 
+    @Transactional(readOnly = true)
     public List<Todo> getTodos() {
         return todoRepository.findAll();
     }
@@ -51,6 +55,11 @@ public class TodoService {
 
     public void deleteAllTodos() {
         todoRepository.deleteAll();
+    }
+
+    @Transactional(readOnly = true)
+    public Todo findVerifiedTodos(Long id){
+        return todoRepository.findById(id).orElse(null);
     }
 }
 

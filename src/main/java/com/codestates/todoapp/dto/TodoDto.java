@@ -1,4 +1,4 @@
-package com.codestates.todoapp;
+package com.codestates.todoapp.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

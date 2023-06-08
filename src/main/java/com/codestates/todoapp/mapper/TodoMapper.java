@@ -1,5 +1,7 @@
-package com.codestates.todoapp;
+package com.codestates.todoapp.mapper;
 
+import com.codestates.todoapp.domain.Todo;
+import com.codestates.todoapp.dto.TodoDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 

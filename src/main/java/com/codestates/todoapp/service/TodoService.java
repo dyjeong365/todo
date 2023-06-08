@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Transactional
@@ -67,12 +66,8 @@ public class TodoService {
     }
 
     private Todo getExistingTodoById(Long id) {
-        Optional<Todo> optionalTodo = todoRepository.findById(id);
-        if (optionalTodo.isPresent()) {
-            return optionalTodo.get();
-        } else {
-            throw new IllegalArgumentException("id: " + id + " 에 해당하는 Todo를 찾을 수 없습니다.");
-        }
+        return todoRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("id: " + id + " 에 해당하는 Todo를 찾을 수 없습니다."));
     }
 }
 

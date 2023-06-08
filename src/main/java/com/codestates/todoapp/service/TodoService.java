@@ -21,7 +21,7 @@ public class TodoService {
 
 
     public Todo updateTodo(Todo todo) {
-        Optional<Todo> optionalTodo = Optional.ofNullable(findVerifiedTodos(todo.getId()));
+        Optional<Todo> optionalTodo = todoRepository.findById(todo.getId());
 
         if (optionalTodo.isPresent()) {
             Todo existingTodo = optionalTodo.get();
@@ -35,8 +35,9 @@ public class TodoService {
         return null;
     }
 
+    @Transactional(readOnly = true)
     public Todo getTodo(Long id) {
-        return findVerifiedTodos(id);
+        return todoRepository.findById(id).orElse(null);
     }
 
     @Transactional(readOnly = true)
@@ -55,11 +56,6 @@ public class TodoService {
 
     public void deleteAllTodos() {
         todoRepository.deleteAll();
-    }
-
-    @Transactional(readOnly = true)
-    public Todo findVerifiedTodos(Long id){
-        return todoRepository.findById(id).orElse(null);
     }
 }
 

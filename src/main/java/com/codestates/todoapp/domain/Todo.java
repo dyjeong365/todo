@@ -24,15 +24,15 @@ public class Todo {
     @Column(nullable = false)
     private boolean completed;
 
-    public void updateTitle(String title){
+    public void updateTitle(String title) {
         this.title = title;
     }
 
-    public void updateTodoOrder(int todoOrder){
+    public void updateTodoOrder(int todoOrder) {
         this.todoOrder = todoOrder;
     }
 
-    public void updateCompleted(boolean completed){
+    public void updateCompleted(boolean completed) {
         this.completed = completed;
     }
 }

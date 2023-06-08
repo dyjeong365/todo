@@ -31,7 +31,6 @@ public class TodoService {
             existingTodo.updateCompleted(todo.isCompleted());
             return todoRepository.save(existingTodo);
         }
-
         return null;
     }
 

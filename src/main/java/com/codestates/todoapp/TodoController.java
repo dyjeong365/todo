@@ -1,5 +1,6 @@
 package com.codestates.todoapp;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -8,15 +9,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/todos")
+@RequiredArgsConstructor
 public class TodoController {
 
     private final TodoService todoService;
     private final TodoMapper mapper;
-
-    public TodoController(TodoService todoService, TodoMapper mapper) {
-        this.todoService = todoService;
-        this.mapper = mapper;
-    }
 
     @PostMapping
     public ResponseEntity<TodoDto.Response> postTodo(@RequestBody TodoDto.Post requestBody) {

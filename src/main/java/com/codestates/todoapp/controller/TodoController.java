@@ -4,23 +4,20 @@ import com.codestates.todoapp.domain.Todo;
 import com.codestates.todoapp.dto.TodoDto;
 import com.codestates.todoapp.mapper.TodoMapper;
 import com.codestates.todoapp.service.TodoService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@RequiredArgsConstructor
 @RequestMapping("/v1/todos")
+@RestController
 public class TodoController {
 
     private final TodoService todoService;
     private final TodoMapper mapper;
-
-    public TodoController(TodoService todoService, TodoMapper mapper) {
-        this.todoService = todoService;
-        this.mapper = mapper;
-    }
 
     @PostMapping
     public ResponseEntity<TodoDto.Response> postTodo(@RequestBody TodoDto.Post requestBody) {

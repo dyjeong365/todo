@@ -2,20 +2,18 @@ package com.codestates.todoapp.service;
 
 import com.codestates.todoapp.domain.Todo;
 import com.codestates.todoapp.repository.TodoRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Transactional
 @Service
 public class TodoService {
     private final TodoRepository todoRepository;
-
-    public TodoService(TodoRepository todoRepository) {
-        this.todoRepository = todoRepository;
-    }
 
     public Todo createTodo(Todo todo) {
         return todoRepository.save(todo);

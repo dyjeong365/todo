@@ -34,7 +34,7 @@ public class TodoService {
             return todoRepository.save(existingTodo);
         }
 
-        throw new IllegalStateException("해당 Todo는 존재하지 않습니다. id: " + todo.getId());
+        return null;
     }
 
     public Todo getTodo(Long id) {
